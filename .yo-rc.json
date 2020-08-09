@@ -1,0 +1,40 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.alhucklabs.friday"
+    },
+    "jhipsterVersion": "6.6.0",
+    "applicationType": "monolith",
+    "baseName": "Friday",
+    "packageName": "com.alhucklabs.friday",
+    "packageFolder": "com/alhucklabs/friday",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "gradle",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "YzZkOTg1ZDNiM2IxMDgzOWEyZDFjNGZlNTk5NDU2OGZhYWQyNmM4ZDgzZTAwNWJjY2E5ZjhmMjY5YmNkMjQ4NjRkZDhlOWMyYzRiYTczNjEyOTQ4MWIxZjNiZjZlMWJjN2RmNDRjOTE0YTcwZWViMWRlMjc1MjMzNmU1MzE5ZmQ=",
+    "embeddableLaunchScript": false,
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "angularX",
+    "clientTheme": "none",
+    "clientThemeVariant": "",
+    "creationTimestamp": 1597005499306,
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false,
+    "blueprints": []
+  }
+}

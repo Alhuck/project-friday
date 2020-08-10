@@ -156,3 +156,5 @@ Then run:
     docker-compose -f src/main/docker/app.yml up -d
 
 ## Continuous Integration (optional)
+
+l

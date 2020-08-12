@@ -5,8 +5,18 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgJhipsterModule } from 'ng-jhipster';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
-  exports: [FormsModule, CommonModule, NgbModule, NgJhipsterModule, InfiniteScrollModule, FontAwesomeModule, ReactiveFormsModule]
+  exports: [
+    FormsModule,
+    CommonModule,
+    NgbModule,
+    NgJhipsterModule,
+    InfiniteScrollModule,
+    FontAwesomeModule,
+    ReactiveFormsModule,
+    MatButtonModule
+  ]
 })
 export class FridaySharedLibsModule {}

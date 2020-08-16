@@ -4,6 +4,8 @@ package com.alhucklabs.friday.web.rest;
 import com.alhucklabs.friday.domain.User;
 import com.alhucklabs.friday.repository.UserRepository;
 import com.alhucklabs.friday.security.SecurityUtils;
+import com.alhucklabs.friday.security.jwt.JWTFilter;
+import com.alhucklabs.friday.security.jwt.TokenProvider;
 import com.alhucklabs.friday.service.MailService;
 import com.alhucklabs.friday.service.UserService;
 import com.alhucklabs.friday.service.dto.PasswordChangeDTO;
@@ -15,7 +17,13 @@ import com.alhucklabs.friday.web.rest.vm.ManagedUserVM;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,11 +51,15 @@ public class AccountResource {
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    private final TokenProvider tokenProvider;
+
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService, TokenProvider tokenProvider) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.tokenProvider = tokenProvider;
+
     }
 
     /**
@@ -60,12 +72,19 @@ public class AccountResource {
      */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
-        if (!checkPasswordLength(managedUserVM.getPassword())) {
-            throw new InvalidPasswordException();
-        }
-        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        mailService.sendActivationEmail(user);
+    public ResponseEntity<UserJWTController.JWTToken> registerAndAunthenticateAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
+//        if (!checkPasswordLength(managedUserVM.getPassword())) {
+//            throw new InvalidPasswordException();
+//        }
+        String simplePwd = managedUserVM.getLogin() + "AWESOME_PWD";
+        User user = userService.registerUser(managedUserVM, simplePwd);
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, "", Collections.singleton(new SimpleGrantedAuthority("ADMIN")));
+//        SecurityContextHolder.getContext().setAuthentication(auth);
+        String jwt = tokenProvider.createToken(auth, false);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        return new ResponseEntity<>(new UserJWTController.JWTToken(jwt), httpHeaders, HttpStatus.OK);
+//        mailService.sendActivationEmail(user);
     }
 
     /**

@@ -4,6 +4,7 @@ import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { LoginService } from 'app/core/login/login.service';
+import { RegisterService } from '../../account/register/register.service';
 
 @Component({
   selector: 'jhi-login-modal',
@@ -25,6 +26,7 @@ export class LoginModalComponent implements AfterViewInit {
     private loginService: LoginService,
     private renderer: Renderer,
     private router: Router,
+    private registerService: RegisterService,
     // public activeModal: NgbActiveModal,
     private fb: FormBuilder
   ) {}
@@ -45,27 +47,34 @@ export class LoginModalComponent implements AfterViewInit {
   }
 
   login(): void {
-    this.loginService
-      .login({
-        id: this.loginForm.get('id')!.value
-        // ,
-        // password: this.loginForm.get('password')!.value,
-        // rememberMe: this.loginForm.get('rememberMe')!.value
-      })
-      .subscribe(
-        () => {
-          this.authenticationError = false;
-          // this.activeModal.close();
-          if (
-            this.router.url === '/account/register' ||
-            this.router.url.startsWith('/account/activate') ||
-            this.router.url.startsWith('/account/reset/')
-          ) {
-            this.router.navigate(['']);
-          }
-        },
-        () => (this.authenticationError = true)
-      );
+    // this.loginService
+    //   .login({
+    //     id: this.loginForm.get('id')!.value
+    //     // ,
+    //     // password: this.loginForm.get('password')!.value,
+    //     // rememberMe: this.loginForm.get('rememberMe')!.value
+    //   })
+    //   .subscribe(
+    //     () => {
+    //       this.authenticationError = false;
+    //       // this.activeModal.close();
+    //       if (
+    //         this.router.url === '/account/register' ||
+    //         this.router.url.startsWith('/account/activate') ||
+    //         this.router.url.startsWith('/account/reset/')
+    //       ) {
+    //         this.router.navigate(['']);
+    //       }
+    //     },
+    //     () => (this.authenticationError = true)
+    //   );
+
+    this.registerService.save({ login: this.loginForm.get('id')!.value, langKey: 'en' }).subscribe(
+      // eslint-disable-next-line no-console
+      res => console.log(res),
+      // eslint-disable-next-line no-console
+      response => console.log(response)
+    );
   }
 
   register(): void {
